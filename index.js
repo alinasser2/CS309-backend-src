@@ -10,11 +10,6 @@ const app = express()
 dotenv.config()
 
 
-//requering DB files
-const User = require('./models/User')
-const Cart = require('./models/Cart')
-const Paintings = require('./models/Painting')
-const purchases = require('./models/Purchase')
 
 
 app.use(express.json())
