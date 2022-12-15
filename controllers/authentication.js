@@ -37,7 +37,14 @@ router.post("/login", async (req, res) => {
       process.env.JWT_KEY,
       { expiresIn: "2d" }
     );
-    res.status(200).send({
+    res.cookie("access_token", {accessToken: accessToken, id: findUser._id}, {
+      httpOnly: true,
+      maxAge: 1000*60*60*24
+    })
+    res
+    .status(200)
+    .header('auth-token', accessToken)
+    .send({
       status: "ok",
       message: "User logged In",
       User: findUser,
@@ -49,6 +56,15 @@ router.post("/login", async (req, res) => {
       .send({ status: "error", message: "email or password is wrong!" });
   }
 });
+
+router.get('/logout', async(req, res) => {
+  
+  res.cookie('access_token', '', {maxAge: 1})
+  res
+      .status(201)
+      .send({ status: "ok", message: "User LoggedOut Successfully"});
+})
+
 
 const createUser = async (req) =>{
   const hashPassword = await bcrypt.hashSync(req.body.password, 10);
