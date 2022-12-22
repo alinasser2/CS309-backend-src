@@ -1,5 +1,6 @@
 const authRoute = require("./controllers/authentication");
 const userRoute = require("./controllers/user");
+const productRoute = require("./controllers/product");
 const cookieParser = require('cookie-parser');
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
@@ -27,4 +28,15 @@ app.use("/api/user", userRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`Listening on ${process.env.PORT}!`);
+});
+
+app.get("/",productRoute.homepage);
+app.get("/add_product" , productRoute.paint_create_get);
+app.post("/add_product" , productRoute.Paint_create_post);
+app.get("/product/:id", productRoute.productpage);
+app.delete("/paint_delete/:id", productRoute.paint_delete);
+
+
+app.use((req, res) => {
+  res.status(404).send('404', { title: '404' });
 });
