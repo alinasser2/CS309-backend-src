@@ -26,10 +26,7 @@ router.get("/getAll", [verifyToken, admin], async (req, res) => {
 
 
 
-router.patch(
-  "/update/:id",
-  [verifyToken, currUserOradmin],
-  async (req, res) => {
+router.patch("/update/:id", [verifyToken, currUserOradmin], async (req, res) => {
     try {
       const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body);
       res.status(200).send({ status: "ok", user: updatedUser });

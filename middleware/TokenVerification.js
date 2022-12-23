@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken')
 const verifyToken = (req, res, next) => {
     const token = req.cookies.access_token
     const passedToken = req.header('auth-token')
-    console.log(passedToken != (token && token.accessToken))
     if(!token || (token && (passedToken != token.accessToken)))
         return res.status(401).send({status: "error", message: "unauthorized.."})
         try {

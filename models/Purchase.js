@@ -3,8 +3,8 @@ const mongoose = require('mongoose')
 const purchaseSchema = new mongoose.Schema({
     user_id:
     {
-        type: Number,
-        required: [true, 'user id is missing!'] 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     },
     total_cash:
     {

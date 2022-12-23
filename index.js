@@ -1,6 +1,7 @@
 const authRoute = require("./controllers/authentication");
+const purchaseRoute = require("./controllers/purchase");
 const userRoute = require("./controllers/user");
-const productRoute = require("./controllers/product");
+const cartRoute = require("./controllers/cart");
 const cookieParser = require('cookie-parser');
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
@@ -23,8 +24,10 @@ mongoose
     console.log(err);
   });
 
-app.use("/api/auth", authRoute);
-app.use("/api/user", userRoute);
+  app.use("/api/purchase", purchaseRoute);
+  app.use("/api/auth", authRoute);
+  app.use("/api/user", userRoute);
+  app.use("/api/cart", cartRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`Listening on ${process.env.PORT}!`);

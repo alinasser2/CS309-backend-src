@@ -28,7 +28,8 @@ const paintingSchema = new mongoose.Schema({
     },
     quantity:
     {
-        type: Number
+        type: Number,
+        required: [true, 'quantity is missing!']
     },
     description:
     {

@@ -12,9 +12,7 @@ router.post("/signup", async (req, res) => {
   if (req.body.admin) addUser.money = 10000;
   try {
     const savedUser = await addUser.save();
-    res
-      .status(201)
-      .send({ status: "ok", message: "User Created Successfully", user: savedUser });
+    res.status(201).send({ status: "ok", message: "User Created Successfully", user: savedUser });
   } catch (error) {
     const err = error.message;
     res.status(501).send({ status: "error", message: err });
@@ -27,6 +25,7 @@ router.post("/login", async (req, res) => {
   const findUser = await User.findOne({ email: req.body.email });
   const userPass = findUser && findUser.password;
   const decodedPass =userPass && await bcrypt.compare(req.body.password, userPass);
+  
   if (findUser && decodedPass) 
   {
     const accessToken = jwt.sign(
@@ -58,7 +57,6 @@ router.post("/login", async (req, res) => {
 });
 
 router.get('/logout', async(req, res) => {
-  
   res.cookie('access_token', '', {maxAge: 1})
   res
       .status(201)

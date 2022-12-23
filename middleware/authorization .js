@@ -5,7 +5,7 @@ const admin = (req, res, next) => {
 };
 
 const currUserOradmin = (req, res, next) => {
-  if (req.user.admin || req.user.id === req.params.id) next();
+  if (req.user.admin || req.user.id === req.cookies.access_token.id) next();
   else
     res
       .status(403)
