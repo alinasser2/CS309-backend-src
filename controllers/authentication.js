@@ -1,13 +1,15 @@
-const router = require("express").Router();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 dotenv.config();
 
-router.post("/signup", async (req, res) => {
+const register = async (req, res) => {
   if (req.body.password.length < 6)
     return res.status(501).send({ status: "error",  message: "password is too short" });
+  const findEmail = await User.findOne({ email: req.body.email });
+  if(findEmail)
+    return res.status(501).send({ status: "error",  message: "email already exists" })
   const addUser = await createUser(req);
   if (req.body.admin) addUser.money = 10000;
   try {
@@ -17,11 +19,11 @@ router.post("/signup", async (req, res) => {
     const err = error.message;
     res.status(501).send({ status: "error", message: err });
   }
-});
+};
 
 
 
-router.post("/login", async (req, res) => {
+const login = async (req, res) => {
   const findUser = await User.findOne({ email: req.body.email });
   const userPass = findUser && findUser.password;
   const decodedPass =userPass && await bcrypt.compare(req.body.password, userPass);
@@ -54,14 +56,14 @@ router.post("/login", async (req, res) => {
       .status(500)
       .send({ status: "error", message: "email or password is wrong!" });
   }
-});
+};
 
-router.get('/logout', async(req, res) => {
+const logout =  async(req, res) => {
   res.cookie('access_token', '', {maxAge: 1})
   res
       .status(201)
       .send({ status: "ok", message: "User LoggedOut Successfully"});
-})
+};
 
 
 const createUser = async (req) =>{
@@ -79,4 +81,8 @@ const createUser = async (req) =>{
   });
 }
 
-module.exports = router;
+module.exports = {
+  register,
+  logout,
+  login
+};

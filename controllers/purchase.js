@@ -1,14 +1,11 @@
-const { admin, currUserOradmin } = require("../middleware/authorization ");
-const verifyToken = require("../middleware/TokenVerification");
 const Paintings = require('../models/Painting');
 const Purchase = require("../models/Purchase");
-const router = require('express').Router();
 const User = require('../models/User');
 const Cart = require('../models/Cart');
 let sum = 0;
 
 
-router.get('/', [verifyToken, currUserOradmin], async (req, res) => {
+const purchase = async (req, res) => {
     const user_id = req.cookies.access_token.id
     const findAllItems = await Cart.find({ user_id: user_id })
     const user = await User.findById(user_id)
@@ -47,13 +44,13 @@ router.get('/', [verifyToken, currUserOradmin], async (req, res) => {
         const err = error.message
         res.status(501).send({ status: "error", message: err })
     }
-})
+}
 
 
-router.get('/getPurchases', [verifyToken, currUserOradmin], async (req, res) => {
+const getPurchases = async (req, res) => {
     const userPurchases = await Purchase.find({ user_id: req.cookies.access_token.id });
     res.status(200).json({ status:"ok", userPurchases, userPurchasesCount: userPurchases.length });
-})
+}
 
 const createPurchase = (data) => {
     return new Purchase({
@@ -62,4 +59,7 @@ const createPurchase = (data) => {
     });
 }
 
-module.exports = router;
+module.exports = {
+    getPurchases,
+    purchase
+}
