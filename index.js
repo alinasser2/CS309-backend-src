@@ -30,10 +30,15 @@ app.use("/api/purchase", purchaseRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/auth", authRoute);
-
+try{
 app.listen(process.env.PORT, () => {
   console.log(`Listening on ${process.env.PORT}!`);
 });
+}
+catch (error)
+{
+  console.log(error);
+}
 
 app.use((req, res) => {
   res.status(200).send('404', { title: '404' });
