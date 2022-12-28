@@ -8,18 +8,18 @@ dotenv.config();
 
 const register = async (req, res) => {
   if (req.body.password.length < 6)
-    return res.status(501).send({ status: "error", message: "password is too short" });
+    return res.status(200).send({ status: "error", message: "password is too short" });
   const findEmail = await User.findOne({ email: req.body.email });
   if (findEmail)
-    return res.status(501).send({ status: "error", message: "email already exists" })
+    return res.status(200).send({ status: "error", message: "email already exists" })
   const addUser = await createUser(req);
   if (req.body.admin) addUser.money = 10000;
   try {
     const savedUser = await addUser.save();
-    res.status(201).send({ status: "ok", message: "User Created Successfully", user: savedUser });
+    res.status(200).send({ status: "ok", message: "User Created Successfully", user: savedUser });
   } catch (error) {
     const err = error.message;
-    res.status(501).send({ status: "error", message: err });
+    res.status(200).send({ status: "error", message: err });
   }
 };
 
@@ -54,7 +54,7 @@ const login = async (req, res) => {
       });
   } else {
     res
-      .status(500)
+      .status(200)
       .send({ status: "error", message: "email or password is wrong!" });
   }
 };
@@ -63,7 +63,7 @@ const logout = async (req, res) => {
   //check if user logged-in
   const isLogged = req.cookies.access_token
   if(!isLogged)
-    return res.status(404).send({ status: "error", message: "no logged-in user!!" })
+    return res.status(200).send({ status: "error", message: "no logged-in user!!" })
   const currUser_id = isLogged.id;
   const currUser_Cart = await Cart.find({ user_id: currUser_id });
   //loop on every item added by currUser and update paintings quantity
@@ -80,10 +80,10 @@ const logout = async (req, res) => {
     //deleteFromCart.deletedCount !=0 incase items deleted
   } catch (error) {
     const err = error.message;
-    return res.status(501).send({ status: "error", message: err });
+    return res.status(200).send({ status: "error", message: err });
   }
   res.cookie('access_token', '', { maxAge: 1 });
-  res.status(201).send({ status: "ok", message: "User LoggedOut Successfully" });
+  res.status(200).send({ status: "ok", message: "User LoggedOut Successfully" });
 };
 
 

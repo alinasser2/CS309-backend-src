@@ -4,10 +4,10 @@ const getUser = async (req, res) => {
   try {
     const getUser = await User.findById(req.params.id);
     if (getUser) res.status(200).send({ status: "ok", user: getUser });
-    else res.status(404).send({ status: "error", message: "not found" });
+    else res.status(200).send({ status: "error", message: "not found" });
   } catch (error) {
     const err = error.message;
-    res.status(500).send({ status: "error", message: err });
+    res.status(200).send({ status: "error", message: err });
   }
 };
 
@@ -17,7 +17,7 @@ const getAllUsers = async (req, res) => {
     res.status(200).send({ status: "ok", users: allUsers, count: allUsers.length});
   } catch (error) {
     const err = error.message;
-    res.status(500).send({ status: "error", message: err });
+    res.status(200).send({ status: "error", message: err });
   }
 };
 
@@ -27,7 +27,7 @@ const updateUser = async (req, res) => {
     res.status(200).send({ status: "ok", user: updatedUser });
   } catch (error) {
     const err = error.message;
-    res.status(500).send({ status: "error", message: err });
+    res.status(200).send({ status: "error", message: err });
   }
 };
 
@@ -36,10 +36,10 @@ const deleteUser = async (req, res) => {
     const deleteUser = await User.findByIdAndDelete(req.params.id);
     if (deleteUser)
       res.status(200).send({ status: "ok", message: "user deleted" });
-    else res.status(500).send({ status: "error", message: "not found" });
+    else res.status(200).send({ status: "error", message: "not found" });
   } catch (error) {
     const err = error.message;
-    res.status(500).send({ status: "error", message: err });
+    res.status(200).send({ status: "error", message: err });
   }
 };
 

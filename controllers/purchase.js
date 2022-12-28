@@ -22,7 +22,7 @@ const purchase = async (req, res) => {
     //validate sum with user money
     if (sum > userMoney) {
         sum = 0
-        return res.status(501).send({ status: "error", message: "not enough money" })
+        return res.status(200).send({ status: "error", message: "not enough money" })
     }
     //create to purchase object
     const addPurchase = createPurchase({ user_id: user_id, total_cash: sum })
@@ -41,7 +41,7 @@ const purchase = async (req, res) => {
     } catch (error) {
         sum = 0
         const err = error.message
-        res.status(501).send({ status: "error", message: err })
+        res.status(200).send({ status: "error", message: err })
     }
 }
 

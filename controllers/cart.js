@@ -8,9 +8,9 @@ const addToCart = async (req, res) => {
   const findPainting = await Painting.findById(painting_id);
 
   if (!findPainting)
-    return res.status(404).send({ status: "error", message: "painting not found!!" });
+    return res.status(200).send({ status: "error", message: "painting not found!!" });
   if (findPainting.quantity < painting_qnt)
-    return res.status(500).send({ status: "error", message: "not enough quantity!!" });
+    return res.status(200).send({ status: "error", message: "not enough quantity!!" });
 
   //update painting
   findPainting.quantity -= painting_qnt;
@@ -27,7 +27,7 @@ const addToCart = async (req, res) => {
     res.status(200).send({ status: "ok", message: "item added to cart", item: savedToCart })
   } catch (error) {
     const err = error.message;
-    res.status(501).send({ status: "error", message: err });
+    res.status(200).send({ status: "error", message: err });
   }
 }
 
@@ -38,7 +38,7 @@ const deleteFromCart = async (req, res) => {
   const findPainting_fromCart = await Cart.findOne({ painting_id: painting_id })
 
   if (!findPainting_fromCart)
-    return res.status(404).send({ status: "error", message: "painting not found!!" })
+    return res.status(200).send({ status: "error", message: "painting not found!!" })
 
   //re-update painting quantity
   const findPainting = await Painting.findById(painting_id)
@@ -50,10 +50,10 @@ const deleteFromCart = async (req, res) => {
     if (deleteFromCart.deletedCount != 0)
       res.status(200).send({ status: "ok", message: "item deleted from cart", item: deleteFromCart })
     else
-      res.status(404).send({ status: "ok", message: "nothing to delete from cart", item: deleteFromCart })
+      res.status(200).send({ status: "ok", message: "nothing to delete from cart", item: deleteFromCart })
   } catch (error) {
     const err = error.message
-    res.status(501).send({ status: "error", message: err })
+    res.status(200).send({ status: "error", message: err })
   }
 }
 
@@ -62,7 +62,7 @@ const getUserItems = async (req, res) => {
   const currUser_id = req.cookies.access_token.id
   const findUserItems = await Cart.find({ user_id: currUser_id })
   if (findUserItems.length == 0)
-    return res.status(404).send({ status: "error", message: "user has no items in cart!!" });
+    return res.status(200).send({ status: "error", message: "user has no items in cart!!" });
   res.status(200).send({ status: "ok", message: "items from cart", items: findUserItems })
 }
 

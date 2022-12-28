@@ -8,7 +8,7 @@ const Paint_create_post = (req, res) => {
   const painting = new Painting(req.body);
   painting.save()
     .then(result => {
-      res.status(201).send("painting added successfully");
+      res.status(200).send("painting added successfully");
     })
     .catch(err => {
       res.send(err);
@@ -16,7 +16,7 @@ const Paint_create_post = (req, res) => {
 };
 
 const paint_create_get = (req, res) => {
-  res.status(201).send({ title: 'add new painting' });
+  res.status(200).send({ title: 'add new painting' });
 }
 
 //homepage
@@ -26,7 +26,7 @@ const homepage = (req, res) => {
 
      
       res
-        .status(201)
+        .status(200)
         .send({ status: "ok", message: "homepage", result });
     })
     .catch(err => {
@@ -42,7 +42,7 @@ const productpage = (req, res) => {
       res.status(200).send(result);
     })
     .catch(err => {
-      res.status(500).send('process failed');
+      res.status(200).send('process failed');
     });
 }
 
@@ -55,10 +55,10 @@ const paint_delete = (req, res) => {
         res.status(200).send('product deleted successfully .')
       }
       else {
-        res.status(500).send('product delete failed .');
+        res.status(200).send('product delete failed .');
       }
     })
-    .catch(err => { res.status(403).send(err) })
+    .catch(err => { res.status(200).send(err) })
 }
 
 //method takes product_id with get to show all comments related to this product
@@ -95,7 +95,7 @@ const get_reviews = async (req,res) =>
     arr.push({name : user.username , comment : req.body.comment , rating : req.body.rating});
     //updating the product with the new array of reviews
     const updated = await Painting.findByIdAndUpdate(req.params.id,{reviews: arr});
-    res.status(500).send("review added successfully");
+    res.status(200).send("review added successfully");
   }
   catch (err) 
   {

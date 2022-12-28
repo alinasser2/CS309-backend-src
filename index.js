@@ -36,5 +36,5 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use((req, res) => {
-  res.status(404).send('404', { title: '404' });
+  res.status(200).send('404', { title: '404' });
 });
