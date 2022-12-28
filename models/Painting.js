@@ -35,6 +35,13 @@ const paintingSchema = new mongoose.Schema({
     {
         type: String
     },
+    reviews: [
+        {
+          name: { type: String, required: true },
+          rating: { type: Number, required: false },
+          comment: { type: String, required: true },
+        }   
+      ]
 
 }, {timestamps: true})
 
