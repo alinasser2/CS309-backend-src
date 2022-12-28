@@ -65,19 +65,17 @@ const paint_delete = (req, res) => {
 const get_reviews = async (req,res) => 
   {
     
-    // try {
-    // const Painting = await Painting.findById(req.params.id);
-    // const reviews=Painting.reviews;
-    // res.status(200).send(reviews)
-    // }
-    // catch (err)
-    // {
-    //   console.log(err);
-    //   res.status(500).send("Internal server error");
-    // }
+    try {
     const product = await Painting.findById(req.params.id);
     const Clients_reviews = product.reviews;
     res.status(200).send(Clients_reviews);
+    }  
+    catch (error)
+    {
+      const err = error.message
+      res.status(200).send({ status: "error", message: err })
+    }
+    
   }
 
   //method takes product_id with get and comment ,rating with with post request
