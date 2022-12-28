@@ -1,11 +1,11 @@
-const Paintings = require('../models/Painting');
+const Painting = require('../models/Painting');
 const Cart = require('../models/Cart');
 
 const addToCart = async (req, res) => {
   const painting_id = req.params.id;
   const painting_qnt = req.params.qnt;
   const currUser_id = req.cookies.access_token.id
-  const findPainting = await Paintings.findById(painting_id);
+  const findPainting = await Painting.findById(painting_id);
 
   if (!findPainting)
     return res.status(404).send({ status: "error", message: "painting not found!!" });
@@ -14,7 +14,7 @@ const addToCart = async (req, res) => {
 
   //update painting
   findPainting.quantity -= painting_qnt;
-  const updatePainting = await Paintings.findOneAndUpdate({ _id: painting_id }, findPainting)
+  const updatePainting = await Painting.findOneAndUpdate({ _id: painting_id }, findPainting)
 
   const addToCart = new Cart({
     user_id: currUser_id,
@@ -41,7 +41,7 @@ const deleteFromCart = async (req, res) => {
     return res.status(404).send({ status: "error", message: "painting not found!!" })
 
   //re-update painting quantity
-  const findPainting = await Paintings.findById(painting_id)
+  const findPainting = await Painting.findById(painting_id)
   findPainting.quantity += findPainting_fromCart.quantity
   await findPainting.save()
 
@@ -68,7 +68,7 @@ const getUserItems = async (req, res) => {
 
 
 const addPainting = async (req, res) => {
-  const addPost = new Paintings(req.body)
+  const addPost = new Painting(req.body)
   const added = await addPost.save();
   res.status(200).send({ added })
 }

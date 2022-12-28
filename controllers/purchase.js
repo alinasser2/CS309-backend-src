@@ -1,4 +1,4 @@
-const Paintings = require('../models/Painting');
+const Painting = require('../models/Painting');
 const Purchase = require("../models/Purchase");
 const User = require('../models/User');
 const Cart = require('../models/Cart');
@@ -15,7 +15,7 @@ const purchase = async (req, res) => {
     for (const item of findAllItems) {
         const paint_id = item.painting_id
         const qnt = item.quantity
-        const paint = await Paintings.findById(paint_id)
+        const paint = await Painting.findById(paint_id)
         sum += qnt * paint.price
     }
 
@@ -27,8 +27,7 @@ const purchase = async (req, res) => {
     //create to purchase object
     const addPurchase = createPurchase({ user_id: user_id, total_cash: sum })
     //update user's money
-    user.money -= sum;
-
+    user.money -= sum
     try {
         //add purchase
         const savedPurchase = await addPurchase.save()
@@ -36,7 +35,7 @@ const purchase = async (req, res) => {
         const updateUser = await User.findOneAndUpdate({ _id: user_id }, user)
         //delete items from cart
         const deletedCart = await Cart.deleteMany({ user_id: user_id })
-
+        //reset sum
         sum = 0
         res.status(200).send({ status: "ok", purchase: savedPurchase, user: updateUser, cart: deletedCart })
     } catch (error) {
