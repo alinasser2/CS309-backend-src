@@ -97,11 +97,11 @@ const get_reviews = async (req,res) =>
     const product = await Painting.findById(req.params.id);
     const Clients_reviews = product.reviews;
     res.status(200).send(Clients_reviews);
-    }
-    catch (err)
+    }  
+    catch (error)
     {
-      const error = err.message
-      res.status(200).send(error);
+      const err = error.message
+      res.status(200).send({ status: "error", message: err })
     }
     
   }
