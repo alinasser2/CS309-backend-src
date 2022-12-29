@@ -30,7 +30,8 @@ const homepage = (req, res) => {
         .send({ status: "ok", message: "homepage", result });
     })
     .catch(err => {
-      console.log(err);
+      // console.log(err);
+      res.status(200).send(err)
     });
 };
 
@@ -61,23 +62,48 @@ const paint_delete = (req, res) => {
     .catch(err => { res.status(200).send(err) })
 }
 
+
+const paint_update = async (req, res) => {
+  try {
+    const updatedPaint= await Painting.findByIdAndUpdate(req.params.id, req.body);
+    res.status(200).send({ status: "ok", user: updatedPaint });
+  } catch (error) {
+    const err = error.message;
+    res.status(200).send({ status: "error", message: err });
+  }
+};
+
+const paint_search = async (req, res) => {
+  try {
+    const paint_title =  req.body.title
+    const ress = paint_title.trim();
+    const findPaint= await Painting.find({title:ress});
+    if(findPaint.length != 0 )
+      res.status(200).send({ status: "ok", paint: findPaint });
+    else
+      res.status(200).send({ status: "ok", message: "Paint Not Found!!" });
+  } catch (error) {
+    const err = error.message;
+    res.status(200).send({ status: "error", message: err });
+  }
+};
+
+
 //method takes product_id with get to show all comments related to this product
 const get_reviews = async (req,res) => 
   {
     
-    // try {
-    // const Painting = await Painting.findById(req.params.id);
-    // const reviews=Painting.reviews;
-    // res.status(200).send(reviews)
-    // }
-    // catch (err)
-    // {
-    //   console.log(err);
-    //   res.status(500).send("Internal server error");
-    // }
+    try {
     const product = await Painting.findById(req.params.id);
     const Clients_reviews = product.reviews;
     res.status(200).send(Clients_reviews);
+    }
+    catch (err)
+    {
+      const error = err.message
+      res.status(200).send(error);
+    }
+    
   }
 
   //method takes product_id with get and comment ,rating with with post request
@@ -99,7 +125,8 @@ const get_reviews = async (req,res) =>
   }
   catch (err) 
   {
-    console.log(err)
+    
+    res.status(200).send(err);
   }
   }
 
@@ -110,6 +137,8 @@ module.exports = {
   productpage,
   paint_delete,
   homepage,
+  paint_update,
+  paint_search,
   add_Review,
   get_reviews
 }
